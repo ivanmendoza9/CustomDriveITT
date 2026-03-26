@@ -1,4 +1,15 @@
-# 🚗 CustomDrive ITT
+# 🚗 CustomDrive ITT : Agencia de Autos
+
+---
+
+Elaborado por:
+
+- Mendoza Suarez Ivan Gustavo
+- Ortega Ramos Yahir
+- Sotelo Rubio Rodrigo
+- Lopez Sandoval Felix Guadalupe
+
+---
 
 ## 📘 Introducción
 
