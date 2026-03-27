@@ -1,0 +1,391 @@
+let nombreUsuario = '';
+let extrasSeleccionados = new Set();
+let currentCar = null;
+
+// Precios base por marca y modelo
+const precios = {
+    toyota: { base: 20000, sport: 25000, luxury: 35000 },
+    bmw: { base: 35000, sport: 45000, luxury: 60000 },
+    audi: { base: 40000, sport: 50000, luxury: 70000 },
+    mercedes: { base: 45000, sport: 55000, luxury: 75000 },
+    ford: { base: 22000, sport: 30000, luxury: 40000 },
+    tesla: { base: 50000, sport: 65000, luxury: 80000 }
+};
+
+// Extras
+const preciosExtras = {
+    gps: 1500,
+    sonido: 2000,
+    piel: 2500,
+    turbo: 4000,
+    neon: 1200,
+    blindaje: 10000,
+    camara: 1800,
+    piloto: 5000
+};
+
+const nombresExtras = {
+    gps: "GPS",
+    sonido: "Sistema de sonido premium",
+    piel: "Asientos de piel",
+    turbo: "Turbo deportivo",
+    neon: "Luces neón",
+    blindaje: "Blindaje nivel 3",
+    camara: "Cámara 360°",
+    piloto: "Piloto automático"
+};
+
+// Imágenes
+const imagenes = {
+    toyota: { base: "Toyota.png", sport: "Toyota_Sport.png", luxury: "Toyota_Luxury.png" },
+    bmw: { base: "BMW.png", sport: "BMW_Sport.png", luxury: "BMW_Luxury.png" },
+    audi: { base: "Audi.png", sport: "Audi_Sport.png", luxury: "Audi_Luxury.png" },
+    mercedes: { base: "Mercedes.png", sport: "Mercedes_Sport.png", luxury: "Mercedes_Luxury.png" },
+    ford: { base: "Ford.png", sport: "Ford_Sport.png", luxury: "Ford_Luxury.png" },
+    tesla: { base: "Tesla.png", sport: "Tesla_Sport.png", luxury: "Tesla_Luxury.png" }
+};
+
+// Clases para el patrón Decorator
+class Car {
+    constructor(price, description) {
+        this.price = price;
+        this.description = description;
+    }
+
+    getPrice() {
+        return this.price;
+    }
+
+    getDescription() {
+        return this.description;
+    }
+}
+
+class CarDecorator {
+    constructor(car) {
+        this.car = car;
+    }
+
+    getPrice() {
+        return this.car.getPrice();
+    }
+
+    getDescription() {
+        return this.car.getDescription();
+    }
+}
+
+class GPSDecorator extends CarDecorator {
+    getPrice() {
+        return super.getPrice() + preciosExtras.gps;
+    }
+
+    getDescription() {
+        return super.getDescription() + ` | ${nombresExtras.gps}`;
+    }
+}
+
+class SoundDecorator extends CarDecorator {
+    getPrice() {
+        return super.getPrice() + preciosExtras.sonido;
+    }
+
+    getDescription() {
+        return super.getDescription() + ` | ${nombresExtras.sonido}`;
+    }
+}
+
+class LeatherDecorator extends CarDecorator {
+    getPrice() {
+        return super.getPrice() + preciosExtras.piel;
+    }
+
+    getDescription() {
+        return super.getDescription() + ` | ${nombresExtras.piel}`;
+    }
+}
+
+class TurboDecorator extends CarDecorator {
+    getPrice() {
+        return super.getPrice() + preciosExtras.turbo;
+    }
+
+    getDescription() {
+        return super.getDescription() + ` | ${nombresExtras.turbo}`;
+    }
+}
+
+class NeonDecorator extends CarDecorator {
+    getPrice() {
+        return super.getPrice() + preciosExtras.neon;
+    }
+
+    getDescription() {
+        return super.getDescription() + ` | ${nombresExtras.neon}`;
+    }
+}
+
+class ArmorDecorator extends CarDecorator {
+    getPrice() {
+        return super.getPrice() + preciosExtras.blindaje;
+    }
+
+    getDescription() {
+        return super.getDescription() + ` | ${nombresExtras.blindaje}`;
+    }
+}
+
+class CameraDecorator extends CarDecorator {
+    getPrice() {
+        return super.getPrice() + preciosExtras.camara;
+    }
+
+    getDescription() {
+        return super.getDescription() + ` | ${nombresExtras.camara}`;
+    }
+}
+
+class PilotDecorator extends CarDecorator {
+    getPrice() {
+        return super.getPrice() + preciosExtras.piloto;
+    }
+
+    getDescription() {
+        return super.getDescription() + ` | ${nombresExtras.piloto}`;
+    }
+}
+
+// Patrón Bridge para entrega
+class Agency {
+    constructor(name, address) {
+        this.name = name;
+        this.address = address;
+    }
+
+    getDetails() {
+        return `${this.name} - ${this.address}`;
+    }
+}
+
+class ToyotaAgency extends Agency {
+    constructor() {
+        super("Agencia Toyota Centro", "Calle Principal 123, Ciudad de México");
+    }
+}
+
+class BMWAgency extends Agency {
+    constructor() {
+        super("Agencia BMW Premium", "Avenida Reforma 456, Ciudad de México");
+    }
+}
+
+class AudiAgency extends Agency {
+    constructor() {
+        super("Agencia Audi Elite", "Boulevard Insurgentes 789, Ciudad de México");
+    }
+}
+
+class MercedesAgency extends Agency {
+    constructor() {
+        super("Agencia Mercedes Benz", "Paseo de la Reforma 101, Ciudad de México");
+    }
+}
+
+class FordAgency extends Agency {
+    constructor() {
+        super("Agencia Ford Motors", "Calle Juárez 202, Ciudad de México");
+    }
+}
+
+class TeslaAgency extends Agency {
+    constructor() {
+        super("Agencia Tesla Future", "Avenida Tecnológico 303, Ciudad de México");
+    }
+}
+
+class Delivery {
+    constructor(agency) {
+        this.agency = agency;
+    }
+
+    deliver(car) {
+        throw new Error("Método deliver debe ser implementado");
+    }
+}
+
+class CarDelivery extends Delivery {
+    deliver(car) {
+        alert(`🚚 Entregando el auto configurado a ${this.agency.getDetails()}.\n\nPrecio total: $${car.getPrice().toLocaleString()} USD\nDescripción: ${car.getDescription()}`);
+    }
+}
+
+// Inicio
+document.addEventListener('DOMContentLoaded', function() {
+    const btnIniciar = document.getElementById('btnIniciar');
+    const bienvenida = document.getElementById('bienvenida');
+    const app = document.getElementById('app');
+    const nombreInput = document.getElementById('nombre');
+
+    btnIniciar.addEventListener('click', function() {
+        if (nombreInput.value.trim() === '') {
+            alert('Por favor ingresa tu nombre');
+            return;
+        }
+
+        nombreUsuario = nombreInput.value.trim();
+        bienvenida.style.display = 'none';
+        app.style.display = 'block';
+
+        document.getElementById('saludo').textContent = `Hola ${nombreUsuario}, configura tu auto ideal`;
+
+        actualizar();
+    });
+});
+
+// FUNCIÓN PRINCIPAL
+function actualizar() {
+
+    const marca = document.getElementById('marca').value;
+    const modelo = document.getElementById('modelo').value;
+    const rines = document.getElementById('rines').value;
+    const color = document.getElementById('color').value;
+    const motor = document.getElementById('motor').value;
+
+    let precioBase = precios[marca][modelo];
+    let precioRines = parseInt(rines);
+    let precioMotor = parseInt(motor);
+    let basePrice = precioBase + precioRines + precioMotor;
+
+    const nombreModelo = {
+        base: 'Base',
+        sport: 'Sport',
+        luxury: 'Luxury'
+    };
+
+    let baseDesc = `🚗 ${marca.toUpperCase()} ${nombreModelo[modelo]} | 🛞 Rines: ${obtenerNombreRines(rines)} | ⚙️ Motor: ${obtenerNombreMotor(motor)}`;
+
+    let car = new Car(basePrice, baseDesc);
+
+    // Aplicar decoradores para extras
+    if (extrasSeleccionados.has('gps')) car = new GPSDecorator(car);
+    if (extrasSeleccionados.has('sonido')) car = new SoundDecorator(car);
+    if (extrasSeleccionados.has('piel')) car = new LeatherDecorator(car);
+    if (extrasSeleccionados.has('turbo')) car = new TurboDecorator(car);
+    if (extrasSeleccionados.has('neon')) car = new NeonDecorator(car);
+    if (extrasSeleccionados.has('blindaje')) car = new ArmorDecorator(car);
+    if (extrasSeleccionados.has('camara')) car = new CameraDecorator(car);
+    if (extrasSeleccionados.has('piloto')) car = new PilotDecorator(car);
+
+    currentCar = car;
+    // Precio
+    document.getElementById('precio').textContent = `$${car.getPrice().toLocaleString()} USD`;
+
+    // Imagen
+    const imagenElement = document.getElementById('carro');
+    if (imagenes[marca] && imagenes[marca][modelo]) {
+        imagenElement.src = imagenes[marca][modelo];
+    }
+
+    // Color visual
+    imagenElement.style.backgroundColor = color;
+
+    // Descripción
+    document.getElementById('descripcion').textContent = car.getDescription();
+
+    // Botón de entrega usando patrón Bridge
+    let btnEntregar = document.getElementById('btnEntregar');
+    if (!btnEntregar) {
+        btnEntregar = document.createElement('button');
+        btnEntregar.id = 'btnEntregar';
+        btnEntregar.className = 'btn-entregar';
+        btnEntregar.textContent = 'Entregar Auto';
+        document.getElementById('app').appendChild(btnEntregar);
+    }
+    btnEntregar.onclick = () => {
+        const modal = document.getElementById('modal');
+        document.getElementById('modal-precio').textContent = '$' + car.getPrice().toLocaleString() + ' USD';
+        document.getElementById('modal-descripcion').textContent = car.getDescription();
+        modal.style.display = 'flex';
+    };
+}
+
+// Funciones auxiliares
+function obtenerNombreRines(valor) {
+    switch(valor) {
+        case '1000': return 'Estándar';
+        case '3000': return 'Deportivos';
+        case '5000': return 'Premium';
+        default: return 'Estándar';
+    }
+}
+
+function obtenerNombreMotor(valor) {
+    switch(valor) {
+        case '3000': return 'Híbrido';
+        case '8000': return 'Eléctrico';
+        default: return 'Gasolina';
+    }
+}
+
+function toggleExtra(button) {
+    const extra = button.getAttribute('data-extra');
+
+    if (extrasSeleccionados.has(extra)) {
+        extrasSeleccionados.delete(extra);
+        button.classList.remove('activo');
+    } else {
+        extrasSeleccionados.add(extra);
+        button.classList.add('activo');
+    }
+
+    actualizar();
+}
+
+function toggleExtras() {
+    const cont = document.getElementById('extrasContainer');
+    const btn = document.getElementById('toggleExtrasBtn');
+    if (cont.classList.contains('collapsed')) {
+        cont.classList.remove('collapsed');
+        btn.textContent = 'Ocultar extras';
+    } else {
+        cont.classList.add('collapsed');
+        btn.textContent = 'Mostrar extras';
+    }
+}
+
+function cerrarModal() {
+    document.getElementById('modal').style.display = 'none';
+}
+
+function confirmarEntrega() {
+    const selected = document.getElementById('agencia-select').value;
+    let agency;
+    switch(selected) {
+        case 'toyota': agency = new ToyotaAgency(); break;
+        case 'bmw': agency = new BMWAgency(); break;
+        case 'audi': agency = new AudiAgency(); break;
+        case 'mercedes': agency = new MercedesAgency(); break;
+        case 'ford': agency = new FordAgency(); break;
+        case 'tesla': agency = new TeslaAgency(); break;
+    }
+
+    // Abre rápido la ventana de seguimiento antes que alertas o acciones bloqueantes
+    window.open('delivery-status.html', '_blank');
+
+    const msg = document.createElement('div');
+    msg.className = 'delivery-alert';
+    msg.textContent = '✅ Enviado: Ya puedes seguir la entrega.';
+    document.body.appendChild(msg);
+
+    cerrarModal();
+
+    // Guardar y usar el auto en el proceso de entrega (que no depende del alert para abrir la ventana)
+    const delivery = new CarDelivery(agency);
+    if (currentCar) {
+        delivery.deliver(currentCar);
+    }
+
+    setTimeout(() => {
+        msg.remove();
+    }, 2800);
+}
