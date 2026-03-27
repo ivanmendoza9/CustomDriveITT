@@ -44,7 +44,8 @@ Desarrollar un sistema que permita la personalización de automóviles utilizand
 
 ## Diagrama UML
 
--
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/a4bddd15-fe9b-4462-b30e-34d2daa9c158" />
+
 
 ---
 
