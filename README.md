@@ -46,6 +46,7 @@ Desarrollar un sistema que permita la personalización de automóviles utilizand
 
 <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/a4bddd15-fe9b-4462-b30e-34d2daa9c158" />
 
+“El diagrama usa herencia para crear tipos de clases, como los decoradores y las agencias, y usa relaciones para mostrar cómo se conectan, por ejemplo, el decorador usa el auto y la entrega usa una agencia.”
 
 ---
 
