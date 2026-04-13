@@ -44,9 +44,19 @@ Desarrollar un sistema que permita la personalización de automóviles utilizand
 
 ## Diagrama UML
 
+Primero se construye el auto usando el patrón Decorador, agregando extras dinámicamente, y después se utiliza el sistema de entrega que trabaja con distintas agencias.
+
 <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/a4bddd15-fe9b-4462-b30e-34d2daa9c158" />
 
-“El diagrama usa herencia para crear tipos de clases, como los decoradores y las agencias, y usa relaciones para mostrar cómo se conectan, por ejemplo, el decorador usa el auto y la entrega usa una agencia.”
+- La clase Car representa el auto inicial antes de agregarle extras.
+- CarDecorator permite envolver el auto y agregarle nuevas características.
+- Cada decorador representa un extra del auto y se agrega como una capa encima del auto base. Modifican el precio y descripción.
+- Agency representa las diferentes agencias donde se puede entregar el auto.
+- Cada clase representa una agencia diferente.
+- Delivery se encarga de manejar la entrega del auto usando una agencia.
+- CarDelivery es la clase que realiza la entrega del auto.
+  
+El diagrama usa herencia para crear tipos de clases, como los decoradores y las agencias, y usa relaciones para mostrar cómo se conectan, por ejemplo, el decorador usa el auto y la entrega usa una agencia.
 
 ---
 
