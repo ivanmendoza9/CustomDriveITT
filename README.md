@@ -106,6 +106,5 @@ Se utiliza para guardar el estado del automóvil en diferentes momentos.
 ## 🧾 Conclusión
 
 Este proyecto demuestra cómo los patrones de diseño pueden aplicarse en un caso real para mejorar la estructura y funcionalidad de un sistema.
-En conjunto, ambos patrones hacen que el sistema sea más flexible, claro y fácil de ampliar.
 
-En conjunto, estos patrones hacen que el programa sea más ordenado, escalable y cercano a soluciones utilizadas en la industria.
+El patrón Decorador permite una personalización flexible del automóvil, el Bridge organiza la lógica de entrega separándola de las agencias, y el Memento añade la capacidad de guardar y recuperar estados del sistema.
