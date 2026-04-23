@@ -13,25 +13,31 @@ Elaborado por:
 
 ## 📘 Introducción
 
-En el presente proyecto se desarrolla una aplicación web que simula el funcionamiento de una agencia automotriz, en la cual el usuario puede configurar un automóvil seleccionando una marca, modelo y diversas características adicionales.
+En este proyecto se desarrolla una aplicación web que simula una agencia automotriz, donde el usuario puede configurar un automóvil seleccionando marca, modelo y diferentes características adicionales.
 
-El sistema permite personalizar el vehículo mediante la adición de extras como GPS, sistema de sonido, asientos de piel, turbo, entre otros, mostrando en tiempo real el costo total y la descripción del automóvil configurado.
+El sistema permite personalizar el vehículo en tiempo real, mostrando su precio y descripción conforme se agregan opciones.
 
-Para lograr una arquitectura flexible y escalable, se implementan dos patrones de diseño: el **patrón Decorador**, utilizado para agregar funcionalidades al vehículo de forma dinámica, y el **patrón Bridge**, empleado para separar la lógica de entrega del automóvil de las agencias disponibles.
+Para lograr una arquitectura flexible y organizada, se implementan tres patrones de diseño:
 
+- Decorador, para agregar características al auto dinámicamente
+- Bridge, para separar la lógica de entrega de las agencias
+- Memento, para guardar y restaurar configuraciones del auto
+
+Esto permite que el sistema sea más realista, escalable y fácil de mantener.
 ---
 
 ## 🎯 Objetivos
 
 ### ✅ Objetivo general
-Desarrollar un sistema que permita la personalización de automóviles utilizando patrones de diseño para lograr flexibilidad y escalabilidad.
+Desarrollar un sistema de configuración de automóviles que implemente patrones de diseño para mejorar la flexibilidad y organización del código.
 
 ### ✅ Objetivos específicos
-- Implementar un sistema de selección de autos por marca y modelo.
-- Permitir la personalización mediante extras dinámicos.
-- Aplicar el patrón Decorador para agregar funcionalidades sin modificar la clase base.
-- Aplicar el patrón Bridge para separar la lógica de entrega de las agencias.
-- Mostrar el costo total del vehículo configurado.
+- Permitir la selección de autos por marca y modelo
+- Implementar personalización mediante extras dinámicos
+- Aplicar el patrón Decorador para extender funcionalidades
+- Utilizar el patrón Bridge para desacoplar la entrega del auto
+- Implementar el patrón Memento para guardar y restaurar configuraciones
+- Mostrar el costo total del vehículo en tiempo real
 
 ---
 
@@ -44,19 +50,7 @@ Desarrollar un sistema que permita la personalización de automóviles utilizand
 
 ## Diagrama UML
 
-Primero se construye el auto usando el patrón Decorador, agregando extras dinámicamente, y después se utiliza el sistema de entrega que trabaja con distintas agencias.
 
-<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/a4bddd15-fe9b-4462-b30e-34d2daa9c158" />
-
-- La clase Car representa el auto inicial antes de agregarle extras.
-- CarDecorator permite envolver el auto y agregarle nuevas características.
-- Cada decorador representa un extra del auto y se agrega como una capa encima del auto base. Modifican el precio y descripción.
-- Agency representa las diferentes agencias donde se puede entregar el auto.
-- Cada clase representa una agencia diferente.
-- Delivery se encarga de manejar la entrega del auto usando una agencia.
-- CarDelivery es la clase que realiza la entrega del auto.
-  
-El diagrama usa herencia para crear tipos de clases, como los decoradores y las agencias, y usa relaciones para mostrar cómo se conectan, por ejemplo, el decorador usa el auto y la entrega usa una agencia.
 
 ---
 
@@ -82,43 +76,36 @@ Finalmente, el usuario elige una agencia, y el sistema simula la entrega del veh
 
 El patrón Decorador influye en la personalización del automóvil.
 
-Se aplica cuando el usuario agrega extras como:
+Se utiliza para agregar extras al automóvil sin modificar la clase base.
 
-- GPS
-- Sonido
-- Asientos de piel
-- Turbo
-etc.
-
-Cada extra envuelve al objeto base (Car), agregando:
-
-- Más costo
-- Más descripción
-
-Esto permite que el auto se construya dinámicamente sin modificar la clase original.
-
-<img width="843" height="141" alt="image" src="https://github.com/user-attachments/assets/19bcaadd-5d53-45de-bd38-3de517a8dd69" />
+- Permite personalizar el auto dinámicamente
+- Evita crear muchas clases para cada combinación
+- Hace el sistema flexible
 
 ---
 
 ## 🌉 ¿Cómo influye el patrón Bridge?
 
-El patrón Bridge influye en la entrega del automóvil.
+Se utiliza para separar la lógica de entrega de las agencias.
 
-Permite separar:
+- Permite cambiar la agencia sin afectar la entrega
+- Mejora la organización del código
+- Facilita agregar nuevas agencias
 
-- La lógica de entrega (Delivery)
-- De las agencias (Agency)
+---
 
-Esto hace que puedas cambiar la agencia sin modificar cómo funciona la entrega.
+💾 Patrón Memento
 
-<img width="494" height="165" alt="image" src="https://github.com/user-attachments/assets/608f90b4-21a8-4b6b-9aba-2ff920947168" />
-<img width="510" height="119" alt="image" src="https://github.com/user-attachments/assets/7b7243e2-14b4-4ca5-b88a-472d6daecbce" />
+Se utiliza para guardar el estado del automóvil en diferentes momentos.
 
+- Permite deshacer cambios
+- Guarda configuraciones del usuario
+- Mejora la experiencia del sistema
 ---
 
 ## 🧾 Conclusión
 
-Este programa muestra cómo se puede simular la personalización de un auto de forma dinámica y organizada. El patrón Decorador permite agregar características fácilmente sin modificar el auto base, mientras que el patrón Bridge ayuda a separar la lógica de entrega de las agencias.
-
+Este proyecto demuestra cómo los patrones de diseño pueden aplicarse en un caso real para mejorar la estructura y funcionalidad de un sistema.
 En conjunto, ambos patrones hacen que el sistema sea más flexible, claro y fácil de ampliar.
+
+En conjunto, estos patrones hacen que el programa sea más ordenado, escalable y cercano a soluciones utilizadas en la industria.
