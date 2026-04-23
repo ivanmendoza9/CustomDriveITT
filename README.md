@@ -24,6 +24,7 @@ Para lograr una arquitectura flexible y organizada, se implementan tres patrones
 - Memento, para guardar y restaurar configuraciones del auto
 
 Esto permite que el sistema sea más realista, escalable y fácil de mantener.
+
 ---
 
 ## 🎯 Objetivos
@@ -50,7 +51,7 @@ Desarrollar un sistema de configuración de automóviles que implemente patrones
 
 ## Diagrama UML
 
-
+<img width="624" height="684" alt="image" src="https://github.com/user-attachments/assets/bc434c58-f72c-422f-b6d7-a0ca65e56c32" />
 
 ---
 
@@ -63,12 +64,6 @@ Primero, el usuario selecciona la marca, modelo, rines, color y tipo de motor, c
 Después, puede agregar diferentes extras como GPS, sonido, asientos de piel o turbo. Cada vez que selecciona uno, el sistema actualiza automáticamente el precio y la descripción del auto.
 
 Finalmente, el usuario elige una agencia, y el sistema simula la entrega del vehículo mostrando el resumen completo del auto configurado.
-
----
-
-## Capturas de Pantalla Ejecución
-
--
 
 ---
 
@@ -94,7 +89,7 @@ Se utiliza para separar la lógica de entrega de las agencias.
 
 ---
 
-💾 Patrón Memento
+💾 ¿Cómo influye el patrón Memento?
 
 Se utiliza para guardar el estado del automóvil en diferentes momentos.
 
