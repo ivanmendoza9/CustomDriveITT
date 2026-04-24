@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Panel de Propietario - Configuración del Vehículo</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="styles.css" />
+		<style>
+			#app {
+				display: block;
+				padding: clamp(16px, 2vw, 24px);
+			}
+
+			.topbar {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: clamp(24px, 3vw, 32px);
+				padding: clamp(16px, 2vw, 24px);
+				background: var(--panel);
+				border: 1px solid var(--line);
+				border-radius: var(--radius-xl);
+				box-shadow: var(--shadow);
+			}
+
+			.topbar-info {
+				flex: 1;
+			}
+
+			.topbar h1 {
+				font-size: clamp(1.5rem, 2.5vw, 2rem);
+				margin: 8px 0;
+				color: var(--text);
+			}
+
+			.topbar-text {
+				color: var(--muted);
+				font-size: 13px;
+			}
+
+			.topbar-actions {
+				display: flex;
+				gap: 8px;
+				flex-wrap: wrap;
+				justify-content: flex-end;
+			}
+
+			.btn-back {
+				border: 1px solid var(--line);
+				background: var(--panel-2);
+				color: var(--text);
+				border-radius: var(--radius-md);
+				padding: 10px 14px;
+				font: inherit;
+				font-weight: 500;
+				font-size: 13px;
+				cursor: pointer;
+				transition: all 0.2s ease;
+			}
+
+			.btn-back:hover {
+				background: var(--accent);
+				color: var(--primary);
+				border-color: var(--primary);
+			}
+
+			.layout {
+				display: grid;
+				grid-template-columns: 1fr 350px;
+				gap: clamp(16px, 2vw, 24px);
+			}
+
+			.config-section {
+				background: var(--panel);
+				border: 1px solid var(--line);
+				border-radius: var(--radius-lg);
+				padding: clamp(20px, 3vw, 28px);
+				box-shadow: var(--shadow);
+			}
+
+			.config-section h3 {
+				font-size: 16px;
+				font-weight: 700;
+				margin-bottom: 16px;
+				color: var(--text);
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				border-bottom: 2px solid var(--line);
+				padding-bottom: 12px;
+			}
+
+			.control-group {
+				margin-bottom: 20px;
+			}
+
+			.control-group:last-child {
+				margin-bottom: 0;
+			}
+
+			.control-label {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 8px;
+				font-weight: 500;
+				font-size: 14px;
+				color: var(--text);
+			}
+
+			.control-value {
+				color: var(--primary);
+				font-weight: 600;
+				min-width: 60px;
+				text-align: right;
+			}
+
+			input[type='range'] {
+				width: 100%;
+				height: 6px;
+				border-radius: 999px;
+				background: var(--bg-soft);
+				outline: none;
+				-webkit-appearance: none;
+				appearance: none;
+				cursor: pointer;
+			}
+
+			input[type='range']::-webkit-slider-thumb {
+				-webkit-appearance: none;
+				appearance: none;
+				width: 18px;
+				height: 18px;
+				border-radius: 50%;
+				background: var(--primary);
+				cursor: pointer;
+				box-shadow: 0 2px 6px rgba(31, 79, 138, 0.3);
+				transition: all 0.2s ease;
+			}
+
+			input[type='range']::-webkit-slider-thumb:hover {
+				transform: scale(1.15);
+				box-shadow: 0 4px 12px rgba(31, 79, 138, 0.4);
+			}
+
+			input[type='range']::-moz-range-thumb {
+				width: 18px;
+				height: 18px;
+				border-radius: 50%;
+				background: var(--primary);
+				cursor: pointer;
+				border: none;
+				box-shadow: 0 2px 6px rgba(31, 79, 138, 0.3);
+				transition: all 0.2s ease;
+			}
+
+			input[type='range']::-moz-range-thumb:hover {
+				transform: scale(1.15);
+				box-shadow: 0 4px 12px rgba(31, 79, 138, 0.4);
+			}
+
+			.control-checkbox {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				cursor: pointer;
+				padding: 10px;
+				border-radius: var(--radius-md);
+				transition: background 0.2s ease;
+			}
+
+			.control-checkbox:hover {
+				background: var(--accent);
+			}
+
+			.control-checkbox input[type='checkbox'] {
+				width: 20px;
+				height: 20px;
+				cursor: pointer;
+				accent-color: var(--primary);
+			}
+
+			.preview-panel {
+				position: sticky;
+				top: clamp(16px, 2vw, 24px);
+				height: fit-content;
+			}
+
+			#preview {
+				width: 100%;
+				height: 400px;
+				background: var(--accent);
+				border-radius: var(--radius-lg);
+				border: 2px solid var(--line);
+				padding: 20px;
+				position: relative;
+				overflow: hidden;
+				display: flex;
+				flex-direction: column;
+				gap: 16px;
+				transition: background-color 0.3s ease;
+			}
+
+			#seatVisual,
+			#steeringVisual {
+				position: absolute;
+				transition: all 0.2s ease;
+			}
+
+			#seatVisual {
+				width: 60px;
+				height: 60px;
+				background: var(--primary);
+				border-radius: 8px;
+				top: 30%;
+				left: 50%;
+				transform-origin: center;
+				box-shadow: 0 4px 12px rgba(31, 79, 138, 0.3);
+			}
+
+			#steeringVisual {
+				width: 50px;
+				height: 50px;
+				background: var(--primary);
+				border-radius: 50%;
+				border: 4px solid #fff;
+				box-shadow: 0 4px 12px rgba(31, 79, 138, 0.3);
+			}
+
+			#previewText {
+				position: absolute;
+				bottom: 16px;
+				left: 16px;
+				right: 16px;
+				font-size: 11px;
+				color: var(--text);
+				background: rgba(255, 255, 255, 0.9);
+				padding: 8px;
+				border-radius: 6px;
+				max-height: 60px;
+				overflow-y: auto;
+				line-height: 1.4;
+			}
+
+			.history-controls {
+				display: flex;
+				gap: 6px;
+				margin-bottom: 16px;
+				flex-wrap: wrap;
+			}
+
+			.btn-history {
+				border: 1px solid var(--line-strong);
+				background: var(--panel-2);
+				color: var(--text);
+				border-radius: var(--radius-md);
+				padding: 6px 10px;
+				font: inherit;
+				font-weight: 500;
+				font-size: 12px;
+				cursor: pointer;
+				transition: all 0.2s ease;
+				flex: 1;
+				min-width: 60px;
+			}
+
+			.btn-history:hover:not(:disabled) {
+				background: var(--accent);
+				color: var(--primary);
+				border-color: var(--primary);
+				transform: translateY(-1px);
+			}
+
+			.btn-history:disabled {
+				opacity: 0.4;
+				cursor: not-allowed;
+			}
+
+			@media (max-width: 1024px) {
+				.layout {
+					grid-template-columns: 1fr;
+				}
+
+				.preview-panel {
+					position: static;
+				}
+
+				#preview {
+					height: 300px;
+				}
+
+				#previewText {
+					font-size: 10px;
+					max-height: 50px;
+				}
+			}
+
+			@media (max-width: 768px) {
+				.topbar {
+					flex-direction: column;
+					align-items: flex-start;
+					gap: 12px;
+				}
+
+				.topbar-actions {
+					width: 100%;
+					justify-content: flex-start;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<header class="topbar">
+				<div class="topbar-info">
+					<span class="kicker">Panel de Propietario</span>
+					<h1 id="nombreUsuario">Configuración de Vehículo</h1>
+					<p class="topbar-text">Personaliza la configuración de confort de tu vehículo</p>
+				</div>
+				<div class="topbar-actions">
+					<button class="btn-back" onclick="goToMenu()">← Volver al menú</button>
+				</div>
+			</header>
+
+			<main class="layout">
+				<section style="display: flex; flex-direction: column; gap: 16px;">
+					<!-- Controles de Historial -->
+					<div class="config-section">
+						<div class="history-controls">
+							<button id="btnUndo" class="btn-history" onclick="undoOwnerConfig()" title="Deshacer (Ctrl+Z)">↶ Deshacer</button>
+							<button id="btnRedo" class="btn-history" onclick="redoOwnerConfig()" title="Rehacer (Ctrl+Y)">↷ Rehacer</button>
+						</div>
+					</div>
+
+					<!-- Gestión de Perfiles -->
+					<div class="config-section">
+						<h3>📁 Perfiles de Conducción</h3>
+						<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+							<button class="btn-history" onclick="saveProfile()">Guardar perfil</button>
+							<select id="profileSelect" onchange="onProfileSelectChange()">
+								<option value="">-- Selecciona un perfil --</option>
+							</select>
+							<button id="btnLoadProfile" class="btn-history" onclick="loadProfile()" disabled>Cargar</button>
+							<button id="btnDeleteProfile" class="btn-history" onclick="deleteProfile()" disabled>Eliminar</button>
+						</div>
+						<span id="profileBadge" class="profile-badge" style="display:none; margin-top: 8px; font-size: 0.9rem;"></span>
+					</div>
+
+					<!-- Configuración de Asiento -->
+					<div class="config-section">
+						<h3>🪑 Posición del Asiento</h3>
+
+						<div class="control-group">
+							<div class="control-label">
+								<span>Posición vertical</span>
+								<span class="control-value" id="seatVerticalLabel">50%</span>
+							</div>
+							<input
+								type="range"
+								id="seatVertical"
+								min="0"
+								max="100"
+								value="50"
+								onchange="handleSeatVertical(this.value)"
+								oninput="handleSeatVertical(this.value)"
+							/>
+						</div>
+
+						<div class="control-group">
+							<div class="control-label">
+								<span>Posición horizontal</span>
+								<span class="control-value" id="seatHorizontalLabel">50%</span>
+							</div>
+							<input
+								type="range"
+								id="seatHorizontal"
+								min="0"
+								max="100"
+								value="50"
+								onchange="handleSeatHorizontal(this.value)"
+								oninput="handleSeatHorizontal(this.value)"
+							/>
+						</div>
+
+						<div class="control-group">
+							<div class="control-label">
+								<span>Ángulo del respaldo</span>
+								<span class="control-value" id="backrestLabel">25°</span>
+							</div>
+							<input
+								type="range"
+								id="backrest"
+								min="0"
+								max="50"
+								value="25"
+								onchange="handleBackrest(this.value)"
+								oninput="handleBackrest(this.value)"
+							/>
+						</div>
+					</div>
+
+					<!-- Configuración del Volante -->
+					<div class="config-section">
+						<h3>🎡 Posición del Volante</h3>
+
+						<div class="control-group">
+							<div class="control-label">
+								<span>Altura</span>
+								<span class="control-value" id="steeringHeightLabel">50%</span>
+							</div>
+							<input
+								type="range"
+								id="steeringHeight"
+								min="0"
+								max="100"
+								value="50"
+								onchange="handleSteeringHeight(this.value)"
+								oninput="handleSteeringHeight(this.value)"
+							/>
+						</div>
+
+						<div class="control-group">
+							<div class="control-label">
+								<span>Distancia</span>
+								<span class="control-value" id="steeringDistanceLabel">50%</span>
+							</div>
+							<input
+								type="range"
+								id="steeringDistance"
+								min="0"
+								max="100"
+								value="50"
+								onchange="handleSteeringDistance(this.value)"
+								oninput="handleSteeringDistance(this.value)"
+							/>
+						</div>
+					</div>
+
+					<!-- Confort del Asiento -->
+					<div class="config-section">
+						<h3>🛋️ Confort del Asiento</h3>
+
+						<div class="control-group">
+							<div class="control-label">
+								<span>Soporte lumbar</span>
+								<span class="control-value" id="lumbarSupportLabel">50%</span>
+							</div>
+							<input
+								type="range"
+								id="lumbarSupport"
+								min="0"
+								max="100"
+								value="50"
+								onchange="handleLumbarSupport(this.value)"
+								oninput="handleLumbarSupport(this.value)"
+							/>
+						</div>
+
+						<div class="control-group">
+							<div class="control-label">
+								<span>Firmeza del asiento</span>
+								<span class="control-value" id="seatFirmnessLabel">50%</span>
+							</div>
+							<input
+								type="range"
+								id="seatFirmness"
+								min="0"
+								max="100"
+								value="50"
+								onchange="handleSeatFirmness(this.value)"
+								oninput="handleSeatFirmness(this.value)"
+							/>
+						</div>
+					</div>
+
+					<!-- Configuración de Espejos -->
+					<div class="config-section">
+						<h3>🪞 Ajuste de Espejos</h3>
+
+						<div class="control-group">
+							<div class="control-label">
+								<span>Espejo izquierdo</span>
+								<span class="control-value" id="mirrorLeftLabel">50%</span>
+							</div>
+							<input
+								type="range"
+								id="mirrorLeft"
+								min="0"
+								max="100"
+								value="50"
+								onchange="handleMirrorLeft(this.value)"
+								oninput="handleMirrorLeft(this.value)"
+							/>
+						</div>
+
+						<div class="control-group">
+							<div class="control-label">
+								<span>Espejo derecho</span>
+								<span class="control-value" id="mirrorRightLabel">50%</span>
+							</div>
+							<input
+								type="range"
+								id="mirrorRight"
+								min="0"
+								max="100"
+								value="50"
+								onchange="handleMirrorRight(this.value)"
+								oninput="handleMirrorRight(this.value)"
+							/>
+						</div>
+
+						<div class="control-group">
+							<div class="control-label">
+								<span>Retrovisor</span>
+								<span class="control-value" id="rearviewLabel">50%</span>
+							</div>
+							<input
+								type="range"
+								id="rearview"
+								min="0"
+								max="100"
+								value="50"
+								onchange="handleRearview(this.value)"
+								oninput="handleRearview(this.value)"
+							/>
+						</div>
+					</div>
+
+					<!-- Configuración de Iluminación -->
+					<div class="config-section">
+						<h3>💡 Iluminación</h3>
+
+						<div class="control-group">
+							<div class="control-label">
+								<span>Luz ambiente</span>
+								<span class="control-value" id="ambientLightLabel">30%</span>
+							</div>
+							<input
+								type="range"
+								id="ambientLight"
+								min="0"
+								max="100"
+								value="30"
+								onchange="handleAmbientLight(this.value)"
+								oninput="handleAmbientLight(this.value)"
+							/>
+						</div>
+
+						<div class="control-group">
+							<div class="control-label">
+								<span>Brillo del tablero</span>
+								<span class="control-value" id="dashboardBrightnessLabel">70%</span>
+							</div>
+							<input
+								type="range"
+								id="dashboardBrightness"
+								min="0"
+								max="100"
+								value="70"
+								onchange="handleDashboardBrightness(this.value)"
+								oninput="handleDashboardBrightness(this.value)"
+							/>
+						</div>
+					</div>
+
+					<!-- Modo y Ambiente Interior -->
+					<div class="config-section">
+						<h3>🎛️ Modo y Ambiente Interior</h3>
+
+						<div class="control-group" style="flex-direction: column; gap: 10px;">
+							<label class="control-label" style="justify-content: space-between; gap: 10px;">
+								<span>Modo de conducción</span>
+								<span class="control-value" id="drivingModeLabel">Confort</span>
+							</label>
+							<select id="drivingMode" onchange="handleDrivingMode(this.value)">
+								<option value="Confort">Confort</option>
+								<option value="Económico">Económico</option>
+								<option value="Deportivo">Deportivo</option>
+							</select>
+						</div>
+
+						<div class="control-group" style="flex-direction: column; gap: 10px;">
+							<label class="control-label" style="justify-content: space-between; gap: 10px;">
+								<span>Ambiente de interior</span>
+								<span class="control-value" id="ambientThemeLabel">Neutro</span>
+							</label>
+							<select id="ambientTheme" onchange="handleAmbientTheme(this.value)">
+								<option value="Neutro">Neutro</option>
+								<option value="Cálido">Cálido</option>
+								<option value="Frío">Frío</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- Configuración de Clima -->
+					<div class="config-section">
+						<h3>❄️ Control de Clima</h3>
+
+						<div class="control-group">
+							<div class="control-label">
+								<span>Temperatura</span>
+								<span class="control-value" id="temperatureLabel">22°C</span>
+							</div>
+							<input
+								type="range"
+								id="temperature"
+								min="16"
+								max="32"
+								value="22"
+								onchange="handleTemperature(this.value)"
+								oninput="handleTemperature(this.value)"
+							/>
+						</div>
+
+						<div class="control-group">
+							<div class="control-label">
+								<span>Calor asiento izquierdo</span>
+								<span class="control-value" id="leftSeatHeatLabel">50%</span>
+							</div>
+							<input
+								type="range"
+								id="leftSeatHeat"
+								min="0"
+								max="100"
+								value="50"
+								onchange="handleLeftSeatHeat(this.value)"
+								oninput="handleLeftSeatHeat(this.value)"
+							/>
+						</div>
+
+						<div class="control-group">
+							<div class="control-label">
+								<span>Calor asiento derecho</span>
+								<span class="control-value" id="rightSeatHeatLabel">50%</span>
+							</div>
+							<input
+								type="range"
+								id="rightSeatHeat"
+								min="0"
+								max="100"
+								value="50"
+								onchange="handleRightSeatHeat(this.value)"
+								oninput="handleRightSeatHeat(this.value)"
+							/>
+						</div>
+
+						<div class="control-group">
+							<div class="control-label">
+								<span>Velocidad del ventilador</span>
+								<span class="control-value" id="fanSpeedLabel">50%</span>
+							</div>
+							<input
+								type="range"
+								id="fanSpeed"
+								min="0"
+								max="100"
+								value="50"
+								onchange="handleFanSpeed(this.value)"
+								oninput="handleFanSpeed(this.value)"
+							/>
+						</div>
+
+						<div class="control-checkbox">
+							<input type="checkbox" id="recirculation" onchange="handleRecirculation(this.checked)" />
+							<label for="recirculation" style="cursor: pointer; margin: 0; flex: 1;">Recirculación de aire</label>
+						</div>
+					</div>
+
+					<!-- Configuración del Techo Solar -->
+					<div class="config-section">
+						<h3>🌞 Techo Solar</h3>
+
+						<div class="control-checkbox">
+							<input type="checkbox" id="sunroof" onchange="handleSunroof(this.checked)" />
+							<label for="sunroof" style="cursor: pointer; margin: 0; flex: 1;">Abrir/Cerrar techo solar</label>
+						</div>
+					</div>
+				</section>
+
+				<!-- Panel de Previsualización -->
+				<section class="preview-panel">
+					<div class="config-section" style="height: 100%; padding: 0; display: flex; flex-direction: column;">
+						<div style="flex: 1; position: relative;">
+							<div id="preview">
+								<div id="seatVisual"></div>
+								<div id="steeringVisual"></div>
+								<div id="previewText"></div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</main>
+		</div>
+
+		<script src="owner-config.js"></script>
+	</body>
+</html>
